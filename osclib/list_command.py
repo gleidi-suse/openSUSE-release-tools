@@ -18,7 +18,7 @@ class ListCommand:
     def __init__(self, api):
         self.api = api
 
-    def perform(self, supersede=False):
+    def perform(self, review_filter=None, supersede=False):
         """
         Perform the list command
         """
@@ -26,7 +26,7 @@ class ListCommand:
         if supersede:
             SupersedeCommand(self.api).perform()
 
-        requests = self.api.get_open_requests()
+        requests = self.api.get_open_requests(review_filter=review_filter)
         if not len(requests):
             return
 
