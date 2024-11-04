@@ -574,7 +574,7 @@ class StagingAPI(object):
         http_DELETE(url, data=ET.tostring(root))
 
     @memoize(session=True, add_invalidate=True)
-    def get_open_requests(self, query_extra=None):
+    def get_open_requests(self, review_filter=None, query_extra=None):
         """
         Get all requests with open review for staging project
         that are not yet included in any staging project
@@ -587,7 +587,11 @@ class StagingAPI(object):
         requests = []
 
         # xpath query, using the -m, -r, -s options
-        where = f"@by_group='{self.cstaging_group}' and @state='new'"
+        if review_filter:
+            where = review_filter
+        else:
+            where = f"@by_group='{self.cstaging_group}' and @state='new'"
+
         target = f"target[@project='{self.project}']"
 
         query = {'match': f"state/@name='review' and review[{where}] and {target}"}
