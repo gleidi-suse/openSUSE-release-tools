@@ -162,7 +162,7 @@ def do_staging(self, subcmd, opts, *args):
         positive review from a member of the licensedigger group or the factory-auto
         one
 
-        list --review-filter "(@by_group='factory-auto' or @by_group='licensedigger') and @state='accepted'"
+        list --review-filter "review[(@by_group='factory-auto' or @by_group='licensedigger') and @state='accepted']"
 
     "lock" acquire a hold on the project in order to execute multiple commands
         and prevent others from interrupting. An example:

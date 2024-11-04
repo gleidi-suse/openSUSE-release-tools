@@ -588,13 +588,13 @@ class StagingAPI(object):
 
         # xpath query, using the -m, -r, -s options
         if review_filter:
-            where = review_filter
+            review_where = review_filter
         else:
-            where = f"@by_group='{self.cstaging_group}' and @state='new'"
+            review_where = f"review[@by_group='{self.cstaging_group}' and @state='new']"
 
         target = f"target[@project='{self.project}']"
 
-        query = {'match': f"state/@name='review' and review[{where}] and {target}"}
+        query = {'match': f"state/@name='review' and {review_where} and {target}"}
         if query_extra is not None:
             query.update(query_extra)
         url = self.makeurl(['search', 'request'], query)
