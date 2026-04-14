@@ -64,6 +64,13 @@ class Git(scm.base.SCMBase):
 
             repo.remote(remote).fetch([revision])
 
+            if revision in { b.name for b in repo.branches }:
+                remote_revision = f"{remote}/{revision}"
+                local_head = repo.git.rev_parse(revision, "--")
+                remote_head = repo.git.rev_parse(remote_revision, "--")
+                if local_head != remote_head:
+                    repo.git.merge("--ff-only", f"{remote}/{revision}")
+
         if revision_name is not None:
             if revision_name not in [b.name for b in repo.branches]:
                 repo.git.checkout("-b", revision_name, f"{remote}/{revision}")
